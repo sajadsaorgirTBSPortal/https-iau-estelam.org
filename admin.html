@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>پنل مدیریت - صدور گواهی</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Tahoma, sans-serif;
+      background: #f1f5f9;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      padding: 30px 15px;
+    }
+    .container {
+      width: 100%;
+      max-width: 800px;
+      background: #fff;
+      padding: 25px 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border-top: 5px solid #1e3a8a;
+    }
+    h2 {
+      color: #1e3a8a;
+      margin-bottom: 20px;
+      font-size: 18px;
+      text-align: center;
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 10px;
+    }
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+    .form-group.full {
+      grid-column: 1 / -1;
+    }
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #475569;
+    }
+    input, select {
+      padding: 8px 12px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #1e3a8a;
+    }
+    .btn-submit {
+      margin-top: 25px;
+      background: #1e3a8a;
+      color: #fff;
+      border: none;
+      padding: 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+      transition: background 0.2s;
+    }
+    .btn-submit:hover {
+      background: #0f2f5e;
+    }
+    .result-box {
+      display: none;
+      margin-top: 20px;
+      padding: 15px;
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-radius: 6px;
+      text-align: center;
+      word-wrap: break-word;
+    }
+    .result-box a {
+      color: #166534;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h2>پنل صدور گواهی تحصیلی</h2>
+    
+    <form id="certificateForm">
+      <div class="form-grid">
+        <div class="form-group full">
+          <label>نام و نام خانوادگی</label>
+          <input type="text" id="fullName" required placeholder="مثال: مرتضی سعیدی مقدم">
+        </div>
+        <div class="form-group">
+          <label>نام پدر</label>
+          <input type="text" id="fatherName" required placeholder="مثال: حسن">
+        </div>
+        <div class="form-group">
+          <label>کد ملی</label>
+          <input type="text" id="nationalId" required placeholder="۰۰۸۳۴۳۰۶۴۴">
+        </div>
+        <div class="form-group">
+          <label>سال تولد</label>
+          <input type="text" id="birthYear" required placeholder="۱۳۶۴">
+        </div>
+        <div class="form-group">
+          <label>مقطع تحصیلی</label>
+          <input type="text" id="degree" required placeholder="کارشناسی پیوسته">
+        </div>
+        <div class="form-group">
+          <label>رشته تحصیلی</label>
+          <input type="text" id="major" required placeholder="مهندسی برق - مخابرات">
+        </div>
+        <div class="form-group">
+          <label>تعداد واحد</label>
+          <input type="text" id="units" required placeholder="۱۴۶">
+        </div>
+        <div class="form-group">
+          <label>معدل کل</label>
+          <input type="text" id="gpa" required placeholder="۱۶/۸۳">
+        </div>
+        <div class="form-group">
+          <label>تاریخ اتمام تحصیل</label>
+          <input type="text" id="gradDate" required placeholder="۹۸/۰۴/۱۵">
+        </div>
+        <div class="form-group">
+          <label>شماره دانشنامه/گواهینامه</label>
+          <input type="text" id="certNumber" required placeholder="۱۶۹۸۴۵۷۰۸۳۴۱">
+        </div>
+        <div class="form-group full">
+          <label>تاریخ تایید سازمان مرکزی</label>
+          <input type="text" id="certDate" required placeholder="۹۸/۱۱/۲۰">
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit">ساخت گواهی و دریافت لینک</button>
+    </form>
+
+    <!-- باکس نمایش نتیجه -->
+    <div class="result-box" id="resultBox">
+      <p>گواهی با موفقیت ساخته شد! لینک اختصاصی دانشجو:</p>
+      <br>
+      <a href="#" id="certificateLink" target="_blank">مشاهده گواهی</a>
+    </div>
+  </div>
+
+  <script>
+    // تولید شماره نامه رندوم (مثلا ۱۴۰۳/۸۴۵۲/م)
+    function generateRandomNumber() {
+      const randomNum = Math.floor(1000 + Math.random() * 9000);
+      return `۱۴۰۳/${randomNum}/م`;
+    }
+
+    // تولید کد استعلام رندوم (مثلا ۱۰۱۶**۴۵۸۷**۳۶۹۰**۱۲۴۵)
+    function generateVerifyCode() {
+      const p1 = Math.floor(1000 + Math.random() * 9000);
+      const p2 = Math.floor(1000 + Math.random() * 9000);
+      const p3 = Math.floor(1000 + Math.random() * 9000);
+      return `۱۰۱۶**${p1}**${p2}**${p3}`;
+    }
+
+    document.getElementById('certificateForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // دریافت مقادیر فرم
+      const data = {
+        name: document.getElementById('fullName').value,
+        father: document.getElementById('fatherName').value,
+        nid: document.getElementById('nationalId').value,
+        birth: document.getElementById('birthYear').value,
+        degree: document.getElementById('degree').value,
+        major: document.getElementById('major').value,
+        units: document.getElementById('units').value,
+        gpa: document.getElementById('gpa').value,
+        gradDate: document.getElementById('gradDate').value,
+        certNum: document.getElementById('certNumber').value,
+        certDate: document.getElementById('certDate').value
+      };
+
+      // تولید مقادیر رندوم
+      data.docNumber = generateRandomNumber();
+      data.verifyCode = generateVerifyCode();
+
+      // به جای ارسال به دیتابیس (که در کلادفلر تنظیم میکنیم)،
+      // فعلاً اطلاعات رو به صورت URL Parameter به صفحه اصلی میفرستیم
+      
+      const baseUrl = window.location.origin + window.location.pathname.replace('admin.html', 'index.html');
+      
+      const queryString = new URLSearchParams({
+        name: data.name,
+        father: data.father,
+        nid: data.nid,
+        birth: data.birth,
+        degree: data.degree,
+        major: data.major,
+        units: data.units,
+        gpa: data.gpa,
+        gradDate: data.gradDate,
+        certNum: data.certNum,
+        certDate: data.certDate,
+        docNum: data.docNumber,
+        verify: data.verifyCode
+      }).toString();
+
+      const finalLink = `${baseUrl}?${queryString}`;
+
+      // نمایش لینک
+      document.getElementById('resultBox').style.display = 'block';
+      const linkElement = document.getElementById('certificateLink');
+      linkElement.href = finalLink;
+      linkElement.textContent = finalLink;
+      
+      // اینجا کد ارسال به Cloudflare Worker رو قرار میدیم
+      // fetch('https://your-worker.your-subdomain.workers.dev/save', { ... })
+    });
+  </script>
+
+</body>
+</html>
