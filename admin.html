@@ -17,18 +17,19 @@
     button:hover { background: #0f2f5e; }
     #result { display: none; margin-top: 15px; padding: 10px; background: #dcfce7; border: 1px solid #16a34a; border-radius: 4px; text-align: center; font-size: 12px; word-break: break-all; }
     #result a { color: #166534; font-weight: bold; }
+    .error { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
   </style>
 </head>
 <body>
 
   <div class="box">
-    <h2>پنل صدور گواهی (دیتابیس آنلاین)</h2>
+    <h2>پنل صدور گواهی</h2>
     <form id="form">
       <div class="grid">
         <input type="text" id="name" placeholder="نام و نام خانوادگی" required class="full">
         <input type="text" id="father" placeholder="نام پدر" required>
         <input type="text" id="nid" placeholder="کد ملی" required>
-        <input type="text" id="birth" placeholder="سال تولد (مثال: ۱۳۶۴)" required>
+        <input type="text" id="birth" placeholder="سال تولد" required>
         <input type="text" id="degree" placeholder="مقطع تحصیلی" required>
         <input type="text" id="major" placeholder="رشته تحصیلی" required>
         <input type="text" id="units" placeholder="تعداد واحد" required>
@@ -40,24 +41,29 @@
       <button type="submit" id="btn">ساخت گواهی و دریافت لینک</button>
     </form>
     <div id="result">
-      لینک گواهی ساخته شد: <br>
+      <span id="resultText"></span><br>
       <a href="#" id="link" target="_blank"></a>
     </div>
   </div>
 
   <script>
-    // ⚠️ آدرس ورکر خودتان را اینجا قرار دهید (بدون / در انتها)
-    const API_URL = "https://YOUR-WORKER-URL.workers.dev"; 
+    // آدرس ورکر شما به صورت خودکار وارد شده است
+    const API_URL = "https://iau-estelam-org.asnadir361.workers.dev"; 
 
-    // تولید شماره و کد رندوم
     const rndNum = () => `۱۴۰۳/${Math.floor(1000 + Math.random() * 9000)}/م`;
     const rndCode = () => `۱۰۱۶**${Math.floor(1000 + Math.random() * 9000)}**${Math.floor(1000 + Math.random() * 9000)}`;
 
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btn');
+      const resultBox = document.getElementById('result');
+      const resultText = document.getElementById('resultText');
+      const link = document.getElementById('link');
+
       btn.innerText = "در حال ذخیره...";
       btn.disabled = true;
+      resultBox.style.display = 'none';
+      resultBox.classList.remove('error');
 
       const data = {
         name: document.getElementById('name').value,
@@ -81,19 +87,24 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
+        
         const json = await res.json();
 
         if (json.success) {
-          const link = `${window.location.origin}/index.html?id=${json.id}`;
-          document.getElementById('result').style.display = 'block';
-          document.getElementById('link').href = link;
-          document.getElementById('link').innerText = link;
+          const finalLink = `${window.location.origin}/index.html?id=${json.id}`;
+          resultBox.classList.remove('error');
+          resultText.innerText = "گواهی با موفقیت ساخته شد!";
+          link.href = finalLink;
+          link.innerText = finalLink;
         } else {
-          alert("خطا در دیتابیس: " + json.error);
+          resultBox.classList.add('error');
+          resultText.innerText = "خطای دیتابیس: " + json.error;
         }
       } catch (err) {
-        alert("خطا در ارتباط با سرور!");
+        resultBox.classList.add('error');
+        resultText.innerText = "خطای شبکه (CORS یا آدرس اشتباه): " + err.message;
       } finally {
+        resultBox.style.display = 'block';
         btn.innerText = "ساخت گواهی و دریافت لینک";
         btn.disabled = false;
       }
