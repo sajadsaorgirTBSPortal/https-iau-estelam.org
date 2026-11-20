@@ -47,7 +47,7 @@
   </div>
 
   <script>
-    // آدرس ورکر شما به صورت خودکار وارد شده است
+    // آدرس ورکر شما
     const API_URL = "https://iau-estelam-org.asnadir361.workers.dev"; 
 
     const rndNum = () => `۱۴۰۳/${Math.floor(1000 + Math.random() * 9000)}/م`;
@@ -91,7 +91,11 @@
         const json = await res.json();
 
         if (json.success) {
-          const finalLink = `${window.location.origin}/index.html?id=${json.id}`;
+          // هوشمندسازی لینک: آدرس فعلی صفحه رو می‌گیره و admin.html رو با index.html جایگزین می‌کنه
+          const currentUrl = window.location.href;
+          const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
+          const finalLink = `${baseUrl}index.html?id=${json.id}`;
+          
           resultBox.classList.remove('error');
           resultText.innerText = "گواهی با موفقیت ساخته شد!";
           link.href = finalLink;
