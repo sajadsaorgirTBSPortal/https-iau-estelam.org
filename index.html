@@ -1,26 +1,132 @@
-<script>
-  // ⚠️ آدرس ورکر خودتان را اینجا قرار دهید
-  const API_URL = "https://YOUR-WORKER-URL.workers.dev"; 
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>گواهی نهایی - دانشگاه آزاد اسلامی</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Tahoma, "Segoe UI", sans-serif; background: #e2e8f0; display: flex; justify-content: center; align-items: flex-start; min-height: 100vh; padding: 20px 15px; }
+    .document-box { width: 100%; max-width: 680px; min-height: 950px; background: #fff; border: 1px solid #ccc; box-shadow: 0 10px 25px rgba(0,0,0,0.1); position: relative; padding: 20px 30px; display: flex; flex-direction: column; }
+    .header-area { display: flex; align-items: center; justify-content: center; gap: 12px; padding-bottom: 8px; }
+    .logo { width: 70px; height: auto; object-fit: contain; }
+    .header-titles { display: flex; flex-direction: column; text-align: right; }
+    .header-titles h1 { font-size: 16px; font-weight: bold; color: #1e3a8a; margin-bottom: 2px; white-space: nowrap; }
+    .header-titles h2 { font-size: 12px; font-weight: normal; color: #1e3a8a; white-space: nowrap; }
+    .blue-line { border-top: 2px solid #1e3a8a; margin-bottom: 8px; }
+    .meta-row { display: flex; justify-content: space-between; font-size: 12px; font-weight: bold; color: #111; margin-bottom: 15px; }
+    .basmala { text-align: center; font-size: 16px; font-weight: bold; margin-bottom: 15px; color: #111; }
+    .inner-box { border: 1px solid #333; flex: 1; padding: 20px; position: relative; overflow: hidden; display: flex; flex-direction: column; }
+    .watermark { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-35deg); font-size: 70px; font-weight: bold; color: rgba(30, 58, 138, 0.08); pointer-events: none; white-space: nowrap; z-index: 0; font-family: 'Times New Roman', serif; }
+    .box-content { position: relative; z-index: 1; display: flex; flex-direction: column; flex: 1; }
+    .form-number { text-align: left; font-size: 11px; font-weight: bold; margin-bottom: 10px; }
+    .box-header { text-align: right; font-weight: bold; color: #1e3a8a; margin-bottom: 15px; font-size: 13px; line-height: 1.6; }
+    .main-text { text-align: justify; font-size: 12.5px; color: #111; line-height: 2; }
+    .main-text b { font-weight: bold; color: #000; }
+    .asterisks { text-align: center; font-size: 16px; font-weight: bold; color: #1e3a8a; margin: 15px 0; letter-spacing: 2px; }
+    .footer-box { display: flex; justify-content: space-between; align-items: flex-end; margin-top: auto; }
+    .footer-right { flex: 1; font-size: 12px; line-height: 1.7; text-align: right; }
+    .signature-area { text-align: center; width: 180px; }
+    .signature-area .title { font-weight: bold; font-size: 12px; color: #1e3a8a; margin-bottom: 3px; }
+    .signature-area .name { font-size: 11px; color: #111; margin-bottom: 4px; }
+    .signature-img { width: 110px; height: auto; display: block; margin: 0 auto; mix-blend-mode: multiply; }
+    .footnotes { margin-top: 12px; font-size: 10px; line-height: 1.6; text-align: justify; color: #111; }
+    .footnotes p { margin-bottom: 6px; position: relative; padding-right: 12px; }
+    .footnotes p::before { content: "❁"; position: absolute; right: 0; color: #1e3a8a; font-size: 10px; }
+  </style>
+</head>
+<body>
 
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get('id');
+  <div class="document-box">
+    <div class="header-area">
+      <img class="logo" src="https://cdn.imgurl.ir/uploads/u42042_.png" alt="لوگوی دانشگاه">
+      <div class="header-titles">
+        <h1>دانشگاه آزاد اسلامی</h1>
+        <h2>مرکز سنجش و پذیرش فارغ التحصیلان</h2>
+      </div>
+    </div>
 
-  // ثبت تاریخ امروز
-  document.getElementById('docDate').innerText = new Date().toLocaleDateString('fa-IR');
+    <div class="blue-line"></div>
 
-  if (id) {
-    fetch(`${API_URL}/api/get?id=${id}`)
-      .then(res => res.json())
-      .then(data => {
-        if (data.error) {
-          alert("خطا: گواهی مورد نظر یافت نشد.");
-          return;
-        }
-        const fields = ['name', 'father', 'nid', 'birth', 'degree', 'major', 'units', 'gpa', 'gradDate', 'certNum', 'certDate', 'docNum', 'verifyCode'];
-        fields.forEach(f => {
-          document.getElementById(f).innerText = data[f];
+    <div class="meta-row">
+      <span>تاریخ ثبت: <span id="docDate">در حال بارگذاری...</span></span>
+      <span>شماره: <span id="docNum">---</span></span>
+    </div>
+
+    <div class="basmala">باسمه تعالی</div>
+
+    <div class="inner-box">
+      <div class="watermark">دانشگاه آزاد اسلامی</div>
+      <div class="box-content">
+        <div class="form-number">فرم شماره ۲</div>
+        <div class="box-header">
+          <div>دانشگاه آزاد اسلامی</div>
+          <div>سازمان مرکزی</div>
+          <div>گواهی می‌شود:</div>
+        </div>
+
+        <div class="main-text">
+          آقای <b id="name">در حال دریافت...</b> فرزند <b id="father">---</b> دانشجو دارای شماره ملی <b id="nid">---</b> متولد <b id="birth">---</b> در مقطع <b id="degree">---</b> رشته <b id="major">---</b> با گذراندن تعداد <b id="units">---</b> واحد درسی در نظام آموزشی تمام وقت و با میانگین کل <b id="gpa">---</b> در تاریخ <b id="gradDate">---</b> در واحد دانشگاهی دانشگاه آزاد اسلامی واحد تهران شمال فارغ التحصیل گردیده است.
+          <br><br>
+          دانشنامه/گواهینامه موقت نامبرده با شماره <b id="certNum">---</b> مورخ <b id="certDate">---</b> در اداره کل دانش‌آموختگان به تایید رسیده است.
+        </div>
+
+        <div class="asterisks">***</div>
+
+        <div class="footer-box">
+          <div class="footer-right">
+            این گواهی صرفاً برای صحت سوابق تحصیلی فارغ التحصیلان صادر گردیده و قابل ارائه به سایر مراجع نمی‌باشد.<br><br>
+            کد استعلام: <b id="verifyCode">---</b>
+          </div>
+          
+          <div class="signature-area">
+            <div class="title">مدیر کل دانش‌آموختگان</div>
+            <div class="name">دکتر محمدرضا اله قلی قصری</div>
+            <img class="signature-img" src="https://github.com/sajadsaorgirTBSPortal/https-iau-estelam.org/raw/refs/heads/main/Picsart_26-11-20_20-05-42-994.jpg" alt="امضا">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footnotes">
+      <p>به استناد اساسنامه دانشگاه آزاد اسلامی مصوب ۱۴۰۱/۰۹/۲۸ شورای عالی خدمات الکترونیک فارغ التحصیلان این گواهی کافی و معتبر بوده و نیاز به مهر ندارد.</p>
+      <p>این گواهی با بررسی سوابق موجود مطابق تبصره ۲ آیین‌نامه مذکور و با استناد به اساسنامه مصوب ۱۴۰۱ به صورت الکترونیکی صادر گردیده است و اصالت آن مورد تایید سازمان مرکزی دانشگاه آزاد اسلامی می‌باشد.</p>
+      <p>مبلغ ۲۵۰,۰۰۰ ریال بابت هزینه ابطال تمبر و خدمات الکترونیک طی شماره ۲۵۷۰۳۴۶۶۰۰۴۹۷۲۶۸ از فارغ التحصیلان دریافت گردید.</p>
+    </div>
+  </div>
+
+  <script>
+    // آدرس دقیق ورکر شما
+    const API_URL = "https://iau-estelam-org.asnadir361.workers.dev"; 
+
+    // تاریخ امروز
+    document.getElementById('docDate').innerText = new Date().toLocaleDateString('fa-IR');
+
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+
+    if (id) {
+      fetch(`${API_URL}/api/get?id=${id}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            alert("خطا: گواهی با این شماره در دیتابیس یافت نشد.");
+            return;
+          }
+          const fields = ['name', 'father', 'nid', 'birth', 'degree', 'major', 'units', 'gpa', 'gradDate', 'certNum', 'certDate', 'docNum', 'verifyCode'];
+          fields.forEach(f => {
+            if(document.getElementById(f)) {
+                document.getElementById(f).innerText = data[f];
+            }
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+          alert("خطا در ارتباط با سرور دیتابیس!");
         });
-      })
-      .catch(() => alert("خطا در برقراری ارتباط با سرور!"));
-  }
-</script>
+    } else {
+      alert("لینک نامعتبر است! لطفا از پنل مدیریت لینک را دریافت کنید.");
+    }
+  </script>
+</body>
+</html>
