@@ -9,121 +9,134 @@
 
     body {
       font-family: Tahoma, "Segoe UI", sans-serif;
-      background: #cbd5e1; /* پس زمینه تیره برای اینکه کاغذ مشخص باشه */
+      background: #f1f5f9; /* رنگ پس زمینه ملایم */
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
-      padding: 15px;
+      padding: 20px 10px;
       color: #1f2937;
-      overflow: hidden; /* جلوگیری از اسکرول */
     }
 
-    /* تنظیمات کاغذ A4 در حالت افقی/مربعی که کامل دیده شود */
+    /* تنظیمات کاغذ A4 */
     .a4-paper {
       width: 100%;
-      max-width: 900px;
-      height: 95vh; /* ارتفاع ثابت برای دیده شدن کل سند در یک نگاه */
+      max-width: 820px;
       background: #fff;
-      padding: 25px 35px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      padding: 30px;
+      box-shadow: 0 4px 15px rgba(0,0,0,.1);
       position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
       border-radius: 4px;
-      transform: scale(0.95); /* کوچک کردن کمی برای جا شدن در صفحه */
-      transform-origin: center center;
     }
 
-    /* هدر سند */
+    /* هدر سند (لوگو و عنوان) */
     .header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1.5px solid #1e3a8a;
-      padding-bottom: 5px;
-      margin-bottom: 5px;
+      margin-bottom: 10px;
     }
 
     .header-center {
       text-align: center;
       flex: 1;
+      padding-right: 40px; /* تنظیم فاصله برای توازن با لوگو */
     }
 
     .header-center h1 {
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      color: #1e3a8a;
-      margin-bottom: 2px;
+      color: #1e3a8a; /* رنگ آبی تیره */
+      margin-bottom: 5px;
     }
 
     .header-center h2 {
-      font-size: 12px;
+      font-size: 13px;
       font-weight: normal;
       color: #1e3a8a;
+      line-height: 1.5;
     }
 
     .logo {
-      width: 70px;
+      width: 80px;
       height: auto;
       object-fit: contain;
     }
 
-    /* بخش تاریخ و شماره */
+    /* خط جداکننده و تاریخ/شماره */
+    .divider-line {
+      border-top: 2px solid #1e3a8a;
+      margin-bottom: 8px;
+    }
+
     .meta-row {
       display: flex;
       justify-content: space-between;
-      font-size: 12px;
+      font-size: 13px;
       font-weight: bold;
-      color: #000;
-      margin-bottom: 5px;
+      color: #111;
+      margin-bottom: 25px;
     }
 
     .basmala {
       text-align: center;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
-      margin: 10px 0;
-      color: #000;
+      margin-bottom: 20px;
+      color: #111;
     }
 
-    /* کادر اصلی متن */
+    /* کادر اصلی فرم */
     .main-box {
-      border: 1px solid #000;
-      padding: 20px 30px;
+      border: 1px solid #333;
+      padding: 20px 25px;
       position: relative;
-      flex: 1; /* پر کردن فضای باقی مانده */
-      display: flex;
-      flex-direction: column;
-      line-height: 1.8;
+      line-height: 2.2; /* فاصله خطوط استاندارد نامه‌های اداری */
       text-align: justify;
-      color: #1f2937;
-      background: #fff;
+      overflow: hidden;
+    }
+
+    /* واترمارک در پس‌زمینه کادر */
+    .watermark {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) rotate(-35deg);
+      font-size: 75px;
+      font-weight: bold;
+      color: rgba(30, 58, 138, 0.06);
+      pointer-events: none;
+      white-space: nowrap;
+      z-index: 0;
+      font-family: 'Times New Roman', serif;
+    }
+
+    /* محتوای کادر */
+    .box-content {
+      position: relative;
+      z-index: 1; /* بالاتر از واترمارک */
     }
 
     .doc-number {
-      position: absolute;
-      top: 10px;
-      right: 15px;
-      font-size: 11px;
+      text-align: right;
+      font-size: 12px;
       font-weight: bold;
-      color: #000;
+      margin-bottom: 10px;
     }
 
     .box-header {
       text-align: right;
       font-weight: bold;
       color: #1e3a8a;
-      margin-bottom: 15px;
-      font-size: 13px;
-      line-height: 1.5;
-      margin-top: 10px;
+      margin-bottom: 20px;
+      font-size: 14px;
+      line-height: 1.8;
     }
 
     .content-text {
-      font-size: 12.5px;
-      margin-bottom: 15px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      color: #111;
     }
 
     .content-text b {
@@ -133,107 +146,108 @@
 
     .center-asterisks {
       text-align: center;
-      margin: 10px 0;
+      margin: 15px 0 25px;
       font-weight: bold;
       color: #1e3a8a;
-      font-size: 16px;
+      font-size: 18px;
+      letter-spacing: 2px;
     }
 
-    /* بخش پایین (مشخصات و امضا) */
+    /* بخش پایین (متن استعلام و امضا) */
     .footer-text {
       display: flex;
       justify-content: space-between;
       align-items: flex-end;
-      margin-top: auto; /* چسبیدن به پایین کادر */
     }
 
-    .footer-left {
+    .footer-right {
       flex: 1;
-      font-size: 12px;
-      line-height: 1.8;
+      font-size: 12.5px;
+      line-height: 2;
       text-align: right;
-      padding-left: 20px;
     }
 
     .signature-area {
       text-align: center;
       width: 200px;
-      margin-bottom: 5px;
     }
 
     .signature-area p {
       font-weight: bold;
-      font-size: 12px;
+      font-size: 13px;
       margin-bottom: 2px;
       color: #1e3a8a;
     }
 
+    .signature-area .name {
+      font-size: 12px;
+      font-weight: normal;
+      color: #333;
+      margin-bottom: 5px;
+    }
+
     .signature-img {
-      width: 110px;
+      width: 120px;
       height: auto;
       display: block;
-      margin: 5px auto 0;
-      mix-blend-mode: multiply; /* حذف سفیدی پس زمینه امضا */
+      margin: 0 auto;
+      mix-blend-mode: multiply;
     }
 
-    /* واترمارک */
-    .watermark {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%) rotate(-30deg);
-      font-size: 60px;
-      font-weight: bold;
-      color: rgba(30, 58, 138, 0.05);
-      pointer-events: none;
-      white-space: nowrap;
-      z-index: 0;
-      font-family: 'Times New Roman', serif;
-    }
-
-    /* پانویس */
+    /* پانویس‌ها (زیر کادر) */
     .footnotes {
-      margin-top: 10px;
-      font-size: 10px;
-      line-height: 1.6;
+      margin-top: 15px;
+      font-size: 10.5px;
+      line-height: 1.8;
       text-align: justify;
-      color: #000;
+      color: #111;
     }
 
     .footnotes p {
-      margin-bottom: 6px;
+      margin-bottom: 8px;
       position: relative;
       padding-right: 15px;
     }
 
     .footnotes p::before {
-      content: "✻";
+      content: "❁";
       position: absolute;
       right: 0;
       color: #1e3a8a;
-      font-size: 10px;
+      font-size: 12px;
     }
 
+    /* واکنش‌گرایی برای موبایل */
+    @media (max-width: 600px) {
+      .a4-paper { padding: 15px; }
+      .header { flex-direction: row; align-items: flex-start; }
+      .header-center { padding-right: 0; }
+      .header-center h1 { font-size: 16px; }
+      .logo { width: 60px; }
+      .main-box { padding: 15px; }
+      .footer-text { flex-direction: column; align-items: center; gap: 20px; }
+      .footer-right { text-align: center; order: 2; }
+      .signature-area { order: 1; }
+      .watermark { font-size: 40px; }
+    }
   </style>
 </head>
 <body>
 
   <div class="a4-paper">
     
-    <!-- هدر -->
+    <!-- هدر سند -->
     <div class="header">
-      <div style="width: 70px;"></div> <!-- فاصله برای توازن -->
-      
       <div class="header-center">
         <h1>دانشگاه آزاد اسلامی</h1>
         <h2>مرکز سنجش و پذیرش فارغ التحصیلان</h2>
       </div>
-
-      <!-- لوگو در سمت چپ (طبق عکس اصلی) -->
+      <!-- لوگو در سمت چپ هدر -->
       <img class="logo" src="https://cdn.imgurl.ir/uploads/u42042_.png" alt="لوگوی دانشگاه آزاد">
     </div>
 
-    <!-- تاریخ و شماره -->
+    <!-- خط و مشخصات -->
+    <div class="divider-line"></div>
     <div class="meta-row">
       <span>تاریخ ثبت: ۱۴۰۳/۰۴/۱۷</span>
       <span>شماره: ۱۴۰۳/۲۸۳۳/م</span>
@@ -246,39 +260,41 @@
       
       <div class="watermark">دانشگاه آزاد اسلامی</div>
 
-      <div class="doc-number">فرم شماره ۲</div>
+      <div class="box-content">
+        <div class="doc-number">فرم شماره ۲</div>
 
-      <div class="box-header">
-        <div>دانشگاه آزاد اسلامی</div>
-        <div>سازمان مرکزی</div>
-        <div>گواهی می‌شود:</div>
-      </div>
-
-      <div class="content-text">
-        آقای <b>مرتضی سعیدی مقدم</b> فرزند <b>حسن</b> دانشجو دارای شماره ملی <b>۰۰۸۳۴۳۰۶۴۴</b> متولد <b>۱۳۶۴</b> در مقطع <b>کارشناسی پیوسته</b> رشته <b>مهندسی برق - مخابرات</b> با گذراندن تعداد <b>۱۴۶</b> واحد درسی در نظام آموزشی تمام وقت و با میانگین کل <b>۱۶/۸۳</b> در تاریخ <b>۹۸/۰۴/۱۵</b> در واحد دانشگاهی دانشگاه آزاد اسلامی واحد تهران شمال فارغ التحصیل گردیده است.
-        <br><br>
-        دانشنامه/گواهینامه موقت نامبرده با شماره <b>۱۶۹۸۴۵۷۰۸۳۴۱</b> مورخ <b>۹۸/۱۱/۲۰</b> در اداره کل دانش‌آموختگان به تایید رسیده است.
-      </div>
-
-      <div class="center-asterisks">***</div>
-
-      <!-- بخش پایین کادر: کد استعلام سمت راست، امضا سمت چپ -->
-      <div class="footer-text">
-        <div class="footer-left">
-          این گواهی صرفاً برای صحت سوابق تحصیلی فارغ التحصیلان صادر گردیده و قابل ارائه به سایر مراجع نمی‌باشد.<br>
-          کد استعلام: <b>۱۰۱۶**۴۱۳۰۹۲۷۱۰۶۳۱۱۰۵۴۹۸</b>
+        <div class="box-header">
+          <div>دانشگاه آزاد اسلامی</div>
+          <div>سازمان مرکزی</div>
+          <div>گواهی می‌شود:</div>
         </div>
-        
-        <div class="signature-area">
-          <p>مدیر کل دانش‌آموختگان</p>
-          <p style="font-size: 11px; font-weight: normal; color: #000;">دکتر محمدرضا اله قلی قصری</p>
-          <img class="signature-img" src="https://github.com/sajadsaorgirTBSPortal/https-iau-estelam.org/raw/refs/heads/main/Picsart_26-11-20_20-05-42-994.jpg" alt="امضا">
+
+        <div class="content-text">
+          آقای <b>مرتضی سعیدی مقدم</b> فرزند <b>حسن</b> دانشجو دارای شماره ملی <b>۰۰۸۳۴۳۰۶۴۴</b> متولد <b>۱۳۶۴</b> در مقطع <b>کارشناسی پیوسته</b> رشته <b>مهندسی برق - مخابرات</b> با گذراندن تعداد <b>۱۴۶</b> واحد درسی در نظام آموزشی تمام وقت و با میانگین کل <b>۱۶/۸۳</b> در تاریخ <b>۹۸/۰۴/۱۵</b> در واحد دانشگاهی دانشگاه آزاد اسلامی واحد تهران شمال فارغ التحصیل گردیده است.
+          <br><br>
+          دانشنامه/گواهینامه موقت نامبرده با شماره <b>۱۶۹۸۴۵۷۰۸۳۴۱</b> مورخ <b>۹۸/۱۱/۲۰</b> در اداره کل دانش‌آموختگان به تایید رسیده است.
+        </div>
+
+        <div class="center-asterisks">***</div>
+
+        <!-- پایین کادر: سمت راست متن، سمت چپ امضا -->
+        <div class="footer-text">
+          <div class="footer-right">
+            این گواهی صرفاً برای صحت سوابق تحصیلی فارغ التحصیلان صادر گردیده و قابل ارائه به سایر مراجع نمی‌باشد.<br>
+            کد استعلام: <b>۱۰۱۶**۴۱۳۰۹۲۷۱۰۶۳۱۱۰۵۴۹۸</b>
+          </div>
+          
+          <div class="signature-area">
+            <p>مدیر کل دانش‌آموختگان</p>
+            <div class="name">دکتر محمدرضا اله قلی قصری</div>
+            <img class="signature-img" src="https://github.com/sajadsaorgirTBSPortal/https-iau-estelam.org/raw/refs/heads/main/Picsart_26-11-20_20-05-42-994.jpg" alt="امضا">
+          </div>
         </div>
       </div>
 
     </div>
 
-    <!-- پانویس‌ها (خارج از کادر اصلی) -->
+    <!-- پانویس‌ها -->
     <div class="footnotes">
       <p>به استناد اساسنامه دانشگاه آزاد اسلامی مصوب ۱۴۰۱/۰۹/۲۸ شورای عالی خدمات الکترونیک فارغ التحصیلان این گواهی کافی و معتبر بوده و نیاز به مهر ندارد.</p>
       <p>این گواهی با بررسی سوابق موجود مطابق تبصره ۲ آیین‌نامه مذکور و با استناد به اساسنامه مصوب ۱۴۰۱ به صورت الکترونیکی صادر گردیده است و اصالت آن مورد تایید سازمان مرکزی دانشگاه آزاد اسلامی می‌باشد.</p>
