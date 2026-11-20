@@ -3,67 +3,259 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>پنل صدور گواهی</title>
+  <title>پنل مدیریت - گواهی‌ها</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma; }
-    body { background: #f1f5f9; padding: 20px; display: flex; justify-content: center; }
-    .box { background: #fff; width: 100%; max-width: 600px; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-    h2 { text-align: center; color: #1e3a8a; margin-bottom: 20px; font-size: 18px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Tahoma, sans-serif; }
+    body { background: #f1f5f9; padding: 20px; display: flex; justify-content: center; color: #1f2937; }
+    
+    /* استایل صفحه لاگین */
+    #loginScreen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #1e3a8a; display: flex; justify-content: center; align-items: center; z-index: 9999; }
+    .login-box { background: #fff; padding: 30px; border-radius: 8px; width: 100%; max-width: 350px; text-align: center; box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+    .login-box h2 { color: #1e3a8a; margin-bottom: 20px; }
+    .login-box input { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; text-align: center; }
+    .login-box button { width: 100%; padding: 10px; background: #1e3a8a; color: #fff; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    
+    /* استایل پنل اصلی */
+    .container { width: 100%; max-width: 1000px; display: none; }
+    .box { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 20px; }
+    h2 { color: #1e3a8a; margin-bottom: 15px; font-size: 18px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
     input { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
     input:focus { border-color: #1e3a8a; outline: none; }
     .full { grid-column: 1 / -1; }
-    button { width: 100%; margin-top: 20px; padding: 12px; background: #1e3a8a; color: white; border: none; border-radius: 4px; font-size: 14px; cursor: pointer; font-weight: bold; }
-    button:hover { background: #0f2f5e; }
-    #result { display: none; margin-top: 15px; padding: 10px; background: #dcfce7; border: 1px solid #16a34a; border-radius: 4px; text-align: center; font-size: 12px; word-break: break-all; }
-    #result a { color: #166534; font-weight: bold; }
-    .error { background: #fee2e2; border-color: #dc2626; color: #991b1b; }
+    button.btn-save { width: 100%; margin-top: 15px; padding: 12px; background: #1e3a8a; color: white; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    button.btn-save:hover { background: #0f2f5e; }
+    
+    /* استایل جدول */
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
+    th, td { padding: 10px; text-align: center; border-bottom: 1px solid #e2e8f0; }
+    th { background: #f8fafc; color: #475569; }
+    .btn-action { padding: 5px 10px; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; margin: 0 2px; font-weight: bold; }
+    .btn-copy { background: #3b82f6; color: white; }
+    .btn-edit { background: #f59e0b; color: white; }
+    .btn-delete { background: #ef4444; color: white; }
+    
+    /* پیام */
+    #result { display: none; margin-top: 15px; padding: 10px; background: #dcfce7; border: 1px solid #16a34a; border-radius: 4px; text-align: center; font-size: 12px; }
+    
+    /* فرم ویرایش */
+    #editSection { display: none; border: 2px dashed #f59e0b; background: #fffbeb; }
+    #editSection h3 { color: #b45309; margin-bottom: 15px; font-size: 14px; }
   </style>
 </head>
 <body>
 
-  <div class="box">
-    <h2>پنل صدور گواهی</h2>
-    <form id="form">
-      <div class="grid">
-        <input type="text" id="name" placeholder="نام و نام خانوادگی" required class="full">
-        <input type="text" id="father" placeholder="نام پدر" required>
-        <input type="text" id="nid" placeholder="کد ملی" required>
-        <input type="text" id="birth" placeholder="سال تولد" required>
-        <input type="text" id="degree" placeholder="مقطع تحصیلی" required>
-        <input type="text" id="major" placeholder="رشته تحصیلی" required>
-        <input type="text" id="units" placeholder="تعداد واحد" required>
-        <input type="text" id="gpa" placeholder="معدل کل" required>
-        <input type="text" id="gradDate" placeholder="تاریخ اتمام تحصیل" required>
-        <input type="text" id="certNum" placeholder="شماره دانشنامه" required>
-        <input type="text" id="certDate" placeholder="تاریخ تایید مرکزی" required class="full">
-      </div>
-      <button type="submit" id="btn">ساخت گواهی و دریافت لینک</button>
-    </form>
-    <div id="result">
-      <span id="resultText"></span><br>
-      <a href="#" id="link" target="_blank"></a>
+  <!-- صفحه لاگین -->
+  <div id="loginScreen">
+    <div class="login-box">
+      <h2>ورود به پنل مدیریت</h2>
+      <input type="password" id="password" placeholder="رمز عبور را وارد کنید">
+      <button onclick="checkPass()">ورود</button>
     </div>
   </div>
 
-  <script>
-    // آدرس ورکر شما
-    const API_URL = "https://iau-estelam-org.asnadir361.workers.dev"; 
+  <!-- پنل اصلی -->
+  <div class="container" id="adminPanel">
+    
+    <!-- بخش ویرایش (مخفی است تا زمانی که دکمه ویرایش زده شود) -->
+    <div class="box" id="editSection">
+      <h3>ویرایش رکورد (شناسه: <span id="editId"></span>)</h3>
+      <div class="grid">
+        <input type="text" id="e_name" placeholder="نام و نام خانوادگی">
+        <input type="text" id="e_father" placeholder="نام پدر">
+        <input type="text" id="e_nid" placeholder="کد ملی">
+        <input type="text" id="e_birth" placeholder="سال تولد">
+        <input type="text" id="e_degree" placeholder="مقطع">
+        <input type="text" id="e_major" placeholder="رشته">
+        <input type="text" id="e_units" placeholder="واحد">
+        <input type="text" id="e_gpa" placeholder="معدل">
+        <input type="text" id="e_gradDate" placeholder="تاریخ اتمام">
+        <input type="text" id="e_certNum" placeholder="شماره دانشنامه">
+        <input type="text" id="e_certDate" placeholder="تاریخ تایید">
+      </div>
+      <button class="btn-save" style="background: #f59e0b;" onclick="saveEdit()">ذخیره تغییرات</button>
+      <button class="btn-save" style="background: #64748b; margin-top: 5px;" onclick="document.getElementById('editSection').style.display='none'">انصراف</button>
+    </div>
 
+    <!-- بخش ثبت رکورد جدید -->
+    <div class="box">
+      <h2>ثبت گواهی جدید</h2>
+      <form id="form">
+        <div class="grid">
+          <input type="text" id="name" placeholder="نام و نام خانوادگی" required>
+          <input type="text" id="father" placeholder="نام پدر" required>
+          <input type="text" id="nid" placeholder="کد ملی" required>
+          <input type="text" id="birth" placeholder="سال تولد" required>
+          <input type="text" id="degree" placeholder="مقطع تحصیلی" required>
+          <input type="text" id="major" placeholder="رشته تحصیلی" required>
+          <input type="text" id="units" placeholder="تعداد واحد" required>
+          <input type="text" id="gpa" placeholder="معدل کل" required>
+          <input type="text" id="gradDate" placeholder="تاریخ اتمام تحصیل" required>
+          <input type="text" id="certNum" placeholder="شماره دانشنامه" required>
+          <input type="text" id="certDate" placeholder="تاریخ تایید مرکزی" required>
+        </div>
+        <button type="submit" class="btn-save" id="btn">ساخت گواهی و دریافت لینک</button>
+      </form>
+      <div id="result">
+        <span id="resultText"></span>
+      </div>
+    </div>
+
+    <!-- بخش لیست رکوردها -->
+    <div class="box">
+      <h2>لیست رکوردهای ثبت شده</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>شناسه</th>
+            <th>نام دانشجو</th>
+            <th>کد ملی</th>
+            <th>تاریخ ثبت</th>
+            <th>عملیات</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <!-- ردیف‌ها با جاوااسکریپت پر می‌شوند -->
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <script>
+    const API_URL = "https://iau-estelam-org.asnadir361.workers.dev";
+    const PASSWORD = "Asnad19";
+
+    // بررسی رمز عبور
+    function checkPass() {
+      const pass = document.getElementById('password').value;
+      if (pass === PASSWORD) {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('adminPanel').style.display = 'block';
+        loadRecords(); // لود کردن جدول
+      } else {
+        alert("رمز عبور اشتباه است!");
+      }
+    }
+
+    // لود کردن رکوردها در جدول
+    async function loadRecords() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '<tr><td colspan="5">در حال دریافت اطلاعات...</td></tr>';
+      
+      try {
+        const res = await fetch(`${API_URL}/api/list`);
+        const records = await res.json();
+        
+        tbody.innerHTML = '';
+        if (records.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5">هیچ رکوردی یافت نشد.</td></tr>';
+          return;
+        }
+
+        records.forEach(r => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${r.id}</td>
+            <td>${r.name}</td>
+            <td>${r.nid}</td>
+            <td>${r.docNum}</td>
+            <td>
+              <button class="btn-action btn-copy" onclick="copyLink(${r.id})">کپی لینک</button>
+              <button class="btn-action btn-edit" onclick="editRecord(${r.id})">ویرایش</button>
+              <button class="btn-action btn-delete" onclick="deleteRecord(${r.id})">حذف</button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+      } catch (err) {
+        tbody.innerHTML = '<tr><td colspan="5" style="color:red;">خطا در دریافت لیست!</td></tr>';
+      }
+    }
+
+    // کپی کردن لینک
+    function copyLink(id) {
+      const baseUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1);
+      const link = `${baseUrl}index.html?id=${id}`;
+      navigator.clipboard.writeText(link).then(() => {
+        alert("لینک کپی شد:\n" + link);
+      }).catch(() => {
+        alert("مرورگر از کپی کردن پشتیبانی نمی‌کند. لینک: \n" + link);
+      });
+    }
+
+    // حذف رکورد
+    async function deleteRecord(id) {
+      if (!confirm("آیا از حذف این رکورد مطمئن هستید؟")) return;
+      try {
+        await fetch(`${API_URL}/api/delete?id=${id}`, { method: 'DELETE' });
+        loadRecords();
+      } catch (err) { alert("خطا در حذف!"); }
+    }
+
+    // باز کردن فرم ویرایش
+    async function editRecord(id) {
+      try {
+        const res = await fetch(`${API_URL}/api/get?id=${id}`);
+        const data = await res.json();
+        
+        document.getElementById('editId').innerText = id;
+        document.getElementById('e_name').value = data.name;
+        document.getElementById('e_father').value = data.father;
+        document.getElementById('e_nid').value = data.nid;
+        document.getElementById('e_birth').value = data.birth;
+        document.getElementById('e_degree').value = data.degree;
+        document.getElementById('e_major').value = data.major;
+        document.getElementById('e_units').value = data.units;
+        document.getElementById('e_gpa').value = data.gpa;
+        document.getElementById('e_gradDate').value = data.gradDate;
+        document.getElementById('e_certNum').value = data.certNum;
+        document.getElementById('e_certDate').value = data.certDate;
+        
+        document.getElementById('editSection').style.display = 'block';
+        window.scrollTo(0, 0); // اسکرول به بالا
+      } catch (err) { alert("خطا در دریافت اطلاعات رکورد!"); }
+    }
+
+    // ذخیره تغییرات ویرایش
+    async function saveEdit() {
+      const id = document.getElementById('editId').innerText;
+      const data = {
+        id: id,
+        name: document.getElementById('e_name').value,
+        father: document.getElementById('e_father').value,
+        nid: document.getElementById('e_nid').value,
+        birth: document.getElementById('e_birth').value,
+        degree: document.getElementById('e_degree').value,
+        major: document.getElementById('e_major').value,
+        units: document.getElementById('e_units').value,
+        gpa: document.getElementById('e_gpa').value,
+        gradDate: document.getElementById('e_gradDate').value,
+        certNum: document.getElementById('e_certNum').value,
+        certDate: document.getElementById('e_certDate').value
+      };
+
+      try {
+        await fetch(`${API_URL}/api/update`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        alert("با موفقیت ویرایش شد!");
+        document.getElementById('editSection').style.display = 'none';
+        loadRecords();
+      } catch (err) { alert("خطا در ویرایش!"); }
+    }
+
+    // ثبت رکورد جدید (مثل قبل)
     const rndNum = () => `۱۴۰۳/${Math.floor(1000 + Math.random() * 9000)}/م`;
     const rndCode = () => `۱۰۱۶**${Math.floor(1000 + Math.random() * 9000)}**${Math.floor(1000 + Math.random() * 9000)}`;
 
     document.getElementById('form').addEventListener('submit', async (e) => {
       e.preventDefault();
       const btn = document.getElementById('btn');
-      const resultBox = document.getElementById('result');
-      const resultText = document.getElementById('resultText');
-      const link = document.getElementById('link');
-
       btn.innerText = "در حال ذخیره...";
       btn.disabled = true;
-      resultBox.style.display = 'none';
-      resultBox.classList.remove('error');
 
       const data = {
         name: document.getElementById('name').value,
@@ -87,28 +279,19 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-        
         const json = await res.json();
 
         if (json.success) {
-          // هوشمندسازی لینک: آدرس فعلی صفحه رو می‌گیره و admin.html رو با index.html جایگزین می‌کنه
-          const currentUrl = window.location.href;
-          const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf('/') + 1);
-          const finalLink = `${baseUrl}index.html?id=${json.id}`;
-          
-          resultBox.classList.remove('error');
-          resultText.innerText = "گواهی با موفقیت ساخته شد!";
-          link.href = finalLink;
-          link.innerText = finalLink;
+          document.getElementById('result').style.display = 'block';
+          document.getElementById('resultText').innerText = "گواهی با موفقیت ذخیره شد! در جدول پایین قابل مشاهده است.";
+          document.getElementById('form').reset();
+          loadRecords(); // اپدیت جدول
         } else {
-          resultBox.classList.add('error');
-          resultText.innerText = "خطای دیتابیس: " + json.error;
+          alert("خطای دیتابیس: " + json.error);
         }
       } catch (err) {
-        resultBox.classList.add('error');
-        resultText.innerText = "خطای شبکه (CORS یا آدرس اشتباه): " + err.message;
+        alert("خطا در ارتباط با سرور!");
       } finally {
-        resultBox.style.display = 'block';
         btn.innerText = "ساخت گواهی و دریافت لینک";
         btn.disabled = false;
       }
