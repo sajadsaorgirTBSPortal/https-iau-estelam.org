@@ -39,7 +39,8 @@
 
   <div class="document-box">
     <div class="header-area">
-      <img class="logo" src="https://cdn.imgurl.ir/uploads/u42042_.png" alt="لوگوی دانشگاه">
+      <!-- لینک لوگوی شما به صورت دائمی جایگزین شد -->
+      <img class="logo" src="https://github.com/sajadsaorgirTBSPortal/https-iau-estelam.org/raw/refs/heads/main/nody-%D8%B3%D9%88%D9%87%D8%A7%D9%86%DA%A9-%D8%AF%D8%A7%D9%86%D8%B4%DA%AF%D8%A7%D9%87-%D8%A2%D8%B2%D8%A7%D8%AF-%D8%AA%D9%87%D8%B1%D8%A7%D9%86-%D9%85%D8%B1%DA%A9%D8%B2-.png" alt="لوگوی دانشگاه آزاد">
       <div class="header-titles">
         <h1>دانشگاه آزاد اسلامی</h1>
         <h2>مرکز سنجش و پذیرش فارغ التحصیلان</h2>
@@ -82,6 +83,7 @@
           <div class="signature-area">
             <div class="title">مدیر کل دانش‌آموختگان</div>
             <div class="name">دکتر محمدرضا اله قلی قصری</div>
+            <!-- لینک امضا (همان لینکی که قبلا آپلود کردید) -->
             <img class="signature-img" src="https://github.com/sajadsaorgirTBSPortal/https-iau-estelam.org/raw/refs/heads/main/Picsart_26-11-20_20-05-42-994.jpg" alt="امضا">
           </div>
         </div>
@@ -96,10 +98,7 @@
   </div>
 
   <script>
-    // آدرس دقیق ورکر شما
     const API_URL = "https://iau-estelam-org.asnadir361.workers.dev"; 
-
-    // تاریخ امروز
     document.getElementById('docDate').innerText = new Date().toLocaleDateString('fa-IR');
 
     const params = new URLSearchParams(window.location.search);
@@ -109,23 +108,15 @@
       fetch(`${API_URL}/api/get?id=${id}`)
         .then(res => res.json())
         .then(data => {
-          if (data.error) {
-            alert("خطا: گواهی با این شماره در دیتابیس یافت نشد.");
-            return;
-          }
+          if (data.error) { alert("خطا: گواهی یافت نشد."); return; }
           const fields = ['name', 'father', 'nid', 'birth', 'degree', 'major', 'units', 'gpa', 'gradDate', 'certNum', 'certDate', 'docNum', 'verifyCode'];
           fields.forEach(f => {
-            if(document.getElementById(f)) {
-                document.getElementById(f).innerText = data[f];
-            }
+            if(document.getElementById(f)) document.getElementById(f).innerText = data[f];
           });
         })
-        .catch((err) => {
-          console.error(err);
-          alert("خطا در ارتباط با سرور دیتابیس!");
-        });
+        .catch(() => alert("خطا در ارتباط با سرور!"));
     } else {
-      alert("لینک نامعتبر است! لطفا از پنل مدیریت لینک را دریافت کنید.");
+      alert("لینک نامعتبر است.");
     }
   </script>
 </body>
